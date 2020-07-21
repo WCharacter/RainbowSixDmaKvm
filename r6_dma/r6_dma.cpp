@@ -182,6 +182,7 @@ void write_loop()
 									//this things should be updated every round
 									enable_no_spread(i, data);							
 									set_firing_mode(i, data, FiringMode::AUTO);
+									enable_no_aim_animation(i, data);
 									printf("Data updated\n");
 								}
 								std::this_thread::sleep_for(std::chrono::milliseconds(10));
