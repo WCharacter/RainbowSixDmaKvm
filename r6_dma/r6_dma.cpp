@@ -122,18 +122,18 @@ void write_loop(WinProcess &proc, R6Data &data)
 	printf("Write thread started\n");
 	while (run_cheat)
 	{
-		R6Data old_data = data;
-
-		read_data(proc, data, false);
+		read_data(proc, data, data.base == 0x0 || data.fovmanager == 0x0);
 		auto weapon2 = proc.Read<uint64_t>(data.weapon + 0x290) - 0x2b306cb952f73b96;
 		float spread_val = proc.Read<float>(weapon2 + 0x80);
-		if (old_data.weapon != data.weapon && spread_val != 0.f)
+		
+		if (spread_val != 0.f)
 		{
-			//this things should be updated every round
-			enable_no_spread(proc, data);
-			set_firing_mode(proc, data, FiringMode::AUTO);
+			enable_esp(proc, data);
+			enable_no_recoil(proc, data);
+			enable_no_spread(proc, data);		
 			enable_no_flash(proc, data);
 			enable_no_aim_animation(proc, data);
+			set_firing_mode(proc, data, FiringMode::AUTO);
 			printf("Data updated\n");
 		}
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
@@ -169,7 +169,8 @@ __attribute__((constructor)) static void init()
 					{
 						printf("\nR6 found %lx:\t%s\n", i.proc.pid, i.proc.name);
 						printf("\tBase:\t%lx\tMagic:\t%hx (valid: %hhx)\n", peb.ImageBaseAddress, magic, (char)(magic == IMAGE_DOS_SIGNATURE));
-
+						printf("Press enter to start\n");
+						getchar();
 						read_data(i, data);
 
 						printf("Base: 0x%lx\nFOV Manager: 0x%lx\nLocal player: 0x%lx\nWeapon: 0x%lx\n", data.base, data.fovmanager, data.localplayer, data.weapon);
