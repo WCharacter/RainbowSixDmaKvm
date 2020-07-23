@@ -26,7 +26,9 @@ struct R6Data
 	uint64_t base;
 	uint64_t localplayer;
 	uint64_t fovmanager;
-	uint64_t weapon;
+	uint64_t currweapon;
+	uint64_t weaponinfo;
+	uint64_t glowmanager;
 };
 
 uint64_t get_base(WinProcess &proc)
@@ -55,8 +57,13 @@ void read_data(WinProcess &proc, R6Data &data, bool init = true)
 
 	auto weapon = proc.Read<uint64_t>(localplayer + 0x90);
 	weapon = proc.Read<uint64_t>(weapon + 0xc8);
+	data.currweapon = weapon;
 
-	data.weapon = weapon;
+	auto weapon2 = proc.Read<uint64_t>(data.currweapon + 0x290) - 0x2b306cb952f73b96;
+	data.weaponinfo = weapon2;
+
+	auto glow = proc.Read<uint64_t>(data.base + GLOW_MANAGER_OFFSET);
+	data.glowmanager = glow;
 }
 
 void enable_esp(WinProcess &proc, const R6Data &data)
@@ -68,14 +75,16 @@ void enable_esp(WinProcess &proc, const R6Data &data)
 
 void enable_no_recoil(WinProcess &proc, const R6Data &data)
 {
-	proc.Write<float>(data.fovmanager + 0xE34, 0.f); // no recoil
+	proc.Write<float>(data.fovmanager + 0xE34, 0.f); 
+	proc.Write<float>(data.weaponinfo + 0x198, 0.f); //rec b
+	proc.Write<float>(data.weaponinfo + 0x18c, 0.f); //rec v
+	proc.Write<float>(data.weaponinfo + 0x17c, 0.f); //rec h
 	printf("No recoil active\n");
 }
 
 void enable_no_spread(WinProcess &proc, const R6Data &data)
 {
-	auto weapon2 = proc.Read<uint64_t>(data.weapon + 0x290) - 0x2b306cb952f73b96;
-	proc.Write<float>(weapon2 + 0x80, 0.f); // no spread
+	proc.Write<float>(data.weaponinfo + 0x80, 0.f); // no spread
 	printf("No spread active\n");
 }
 
@@ -114,7 +123,22 @@ void set_fov(WinProcess &proc, const R6Data &data, float fov_val)
 
 void set_firing_mode(WinProcess &proc, const R6Data &data, FiringMode mode)
 {
-	proc.Write<uint32_t>(data.weapon + 0x118, (uint32_t)mode); //firing mode 0 - auto 3 - single 2 -  burst
+	proc.Write<uint32_t>(data.currweapon + 0x118, (uint32_t)mode); //firing mode 0 - auto 3 - single 2 -  burst
+	printf("Fire mode: %s\n", (mode == FiringMode::AUTO ? "auto" : mode == FiringMode::BURST ? "burst" : "single"));
+}
+
+void enable_glow(WinProcess &proc, const R6Data &data)
+{	
+	auto chain = proc.Read<uint64_t>(data.glowmanager  + 0xb8);
+	
+	proc.Write<float>(chain + 0xd0, -10.f);  //r
+	proc.Write<float>(chain + 0xd4, 0.f);    //g
+	proc.Write<float>(chain + 0xd8, -10.f);  //b
+	proc.Write<float>(chain + 0x110, 1.f);   //a
+	proc.Write<float>(chain + 0x114, 1.f); 
+	proc.Write<float>(chain + 0x118, 0.f); //glow 
+	proc.Write<float>(chain + 0x11c, 5.f); //opacity
+	printf("Glow active\n");
 }
 
 void write_loop(WinProcess &proc, R6Data &data)
@@ -122,9 +146,8 @@ void write_loop(WinProcess &proc, R6Data &data)
 	printf("Write thread started\n");
 	while (run_cheat)
 	{
-		read_data(proc, data, data.base == 0x0 || data.fovmanager == 0x0);
-		auto weapon2 = proc.Read<uint64_t>(data.weapon + 0x290) - 0x2b306cb952f73b96;
-		float spread_val = proc.Read<float>(weapon2 + 0x80);
+		read_data(proc, data, data.base == 0x0 || data.fovmanager == 0x0 || data.currweapon == 0);
+		float spread_val = proc.Read<float>(data.weaponinfo + 0x80);
 		
 		if (spread_val != 0.f)
 		{
@@ -133,8 +156,9 @@ void write_loop(WinProcess &proc, R6Data &data)
 			enable_no_spread(proc, data);		
 			enable_no_flash(proc, data);
 			enable_no_aim_animation(proc, data);
+			enable_glow(proc, data);
 			set_firing_mode(proc, data, FiringMode::AUTO);
-			printf("Data updated\n");
+			printf("Data updated\n\n");
 		}
 		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
@@ -173,13 +197,14 @@ __attribute__((constructor)) static void init()
 						getchar();
 						read_data(i, data);
 
-						printf("Base: 0x%lx\nFOV Manager: 0x%lx\nLocal player: 0x%lx\nWeapon: 0x%lx\n", data.base, data.fovmanager, data.localplayer, data.weapon);
+						printf("Base: 0x%lx\nFOV Manager: 0x%lx\nLocal player: 0x%lx\nWeapon: 0x%lx\nGlow manager: 0x%lx\n", data.base, data.fovmanager, data.localplayer, data.currweapon, data.glowmanager);
 
 						enable_esp(i, data);
 						enable_no_recoil(i, data);
 						enable_no_spread(i, data);
 						enable_no_flash(i, data);
 						enable_no_aim_animation(i, data);
+						enable_glow(i, data);
 						//enable_run_and_shoot(i, data);
 
 						set_firing_mode(i, data, FiringMode::AUTO);
