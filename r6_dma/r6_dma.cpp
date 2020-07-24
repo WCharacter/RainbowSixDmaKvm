@@ -29,6 +29,7 @@ struct R6Data
 	uint64_t currweapon;
 	uint64_t weaponinfo;
 	uint64_t glowmanager;
+	uint64_t roundmanager;
 };
 
 uint64_t get_base(WinProcess &proc)
@@ -64,6 +65,9 @@ void read_data(WinProcess &proc, R6Data &data, bool init = true)
 
 	auto glow = proc.Read<uint64_t>(data.base + GLOW_MANAGER_OFFSET);
 	data.glowmanager = glow;
+
+	auto roundmanager = proc.Read<uint64_t>(data.base + ROUND_MANAGER_OFFSET);
+	data.roundmanager = roundmanager;
 }
 
 void enable_esp(WinProcess &proc, const R6Data &data)
@@ -75,7 +79,7 @@ void enable_esp(WinProcess &proc, const R6Data &data)
 
 void enable_no_recoil(WinProcess &proc, const R6Data &data)
 {
-	proc.Write<float>(data.fovmanager + 0xE34, 0.f); 
+	proc.Write<float>(data.fovmanager + 0xE34, 0.f);
 	proc.Write<float>(data.weaponinfo + 0x198, 0.f); //rec b
 	proc.Write<float>(data.weaponinfo + 0x18c, 0.f); //rec v
 	proc.Write<float>(data.weaponinfo + 0x17c, 0.f); //rec h
@@ -109,6 +113,7 @@ void enable_no_aim_animation(WinProcess &proc, const R6Data &data)
 	auto no_anim = proc.Read<uint64_t>(data.localplayer + 0x90);
 	no_anim = proc.Read<uint64_t>(no_anim + 0xc8);
 	proc.Write<uint8_t>(no_anim + 0x384, 0);
+
 	printf("No aim animation active\n");
 }
 
@@ -128,17 +133,46 @@ void set_firing_mode(WinProcess &proc, const R6Data &data, FiringMode mode)
 }
 
 void enable_glow(WinProcess &proc, const R6Data &data)
-{	
-	auto chain = proc.Read<uint64_t>(data.glowmanager  + 0xb8);
-	
-	proc.Write<float>(chain + 0xd0, -10.f);  //r
-	proc.Write<float>(chain + 0xd4, 0.f);    //g
-	proc.Write<float>(chain + 0xd8, -10.f);  //b
-	proc.Write<float>(chain + 0x110, 1.f);   //a
-	proc.Write<float>(chain + 0x114, 1.f); 
-	proc.Write<float>(chain + 0x118, 0.f); //glow 
-	proc.Write<float>(chain + 0x11c, 5.f); //opacity
-	printf("Glow active\n");
+{
+	auto chain = proc.Read<uint64_t>(data.glowmanager + 0xb8);
+	if (chain != 0)
+	{
+		proc.Write<float>(chain + 0xd0, 1.f); //r
+		proc.Write<float>(chain + 0xd4, 1.f);	//g
+		proc.Write<float>(chain + 0xd8, 0.f); //b
+		proc.Write<float>(chain + 0x110, 100.f); //distance
+		proc.Write<float>(chain + 0x118, 0.f); //a
+		proc.Write<float>(chain + 0x11c, 1.f); //opacity
+		printf("Glow active\n");
+	}
+	else
+	{
+		printf("[ERROR]: Can not activate glow\n");
+	}
+}
+//TODO: check for team, set color for allies and enemies
+void enable_outline(WinProcess &proc, const R6Data &data)
+{
+	//3 = defense
+	//4 = attack
+	auto chain = proc.Read<uint64_t>(data.base + GAME_MANAGER_OFFSET);
+	proc.Write<uint8_t>(chain + 0x518, 0x3);	
+}
+
+void enable_wall_ping(WinProcess &proc, const R6Data &data)
+{
+	proc.Write<uint8_t>(data.base + 0x19caff0, 0);
+}
+
+int32_t get_game_state(WinProcess &proc, const R6Data &data)
+{
+	return proc.Read<uint8_t>(data.roundmanager + 0x2e8);
+}
+
+//player is currently in operator selection menu
+bool is_in_op_select_menu(WinProcess &proc, const R6Data& data)
+{
+	return get_game_state(proc, data) == 5;
 }
 
 void write_loop(WinProcess &proc, R6Data &data)
@@ -148,12 +182,12 @@ void write_loop(WinProcess &proc, R6Data &data)
 	{
 		read_data(proc, data, data.base == 0x0 || data.fovmanager == 0x0 || data.currweapon == 0);
 		float spread_val = proc.Read<float>(data.weaponinfo + 0x80);
-		
+				
 		if (spread_val != 0.f)
 		{
 			enable_esp(proc, data);
 			enable_no_recoil(proc, data);
-			enable_no_spread(proc, data);		
+			enable_no_spread(proc, data);
 			enable_no_flash(proc, data);
 			enable_no_aim_animation(proc, data);
 			enable_glow(proc, data);
@@ -197,14 +231,17 @@ __attribute__((constructor)) static void init()
 						getchar();
 						read_data(i, data);
 
-						printf("Base: 0x%lx\nFOV Manager: 0x%lx\nLocal player: 0x%lx\nWeapon: 0x%lx\nGlow manager: 0x%lx\n", data.base, data.fovmanager, data.localplayer, data.currweapon, data.glowmanager);
+						printf("Base: 0x%lx\nFOV Manager: 0x%lx\nLocal player: 0x%lx\nWeapon: 0x%lx\nGlow manager: 0x%lx\nRound manager: 0x%lx\n", 
+								data.base, data.fovmanager, data.localplayer, data.currweapon, data.glowmanager, data.roundmanager);
 
 						enable_esp(i, data);
 						enable_no_recoil(i, data);
 						enable_no_spread(i, data);
 						enable_no_flash(i, data);
 						enable_no_aim_animation(i, data);
+						enable_wall_ping(i,data);
 						enable_glow(i, data);
+						//enable_outline(i, data);
 						//enable_run_and_shoot(i, data);
 
 						set_firing_mode(i, data, FiringMode::AUTO);
@@ -214,8 +251,7 @@ __attribute__((constructor)) static void init()
 						// scanf("%f", &fov);
 						// fprintf(out, "\n");
 						// set_fov(i, data, fov);
-
-						//checking if weapon is updated
+					
 						std::thread write_thread(write_loop, std::ref(i), std::ref(data));
 						write_thread.detach();
 
