@@ -177,12 +177,6 @@ void enable_glow(WinProcess &proc, const R6Data &data)
 	}
 }
 
-void enable_wall_ping(WinProcess &proc, const R6Data &data)
-{
-	if(data.base == 0) return;
-	proc.Write<uint8_t>(data.base + 0x19caff0, 0);
-}
-
 int32_t get_game_state(WinProcess &proc, const R6Data &data)
 {
 	if(data.round_manager == 0) return -1;
@@ -267,7 +261,6 @@ __attribute__((constructor)) static void init()
 						enable_no_spread(i, data);
 						enable_no_flash(i, data);
 						enable_no_aim_animation(i, data);
-						//enable_wall_ping(i,data);
 						enable_glow(i, data);
 						//enable_run_and_shoot(i, data);
 					    
