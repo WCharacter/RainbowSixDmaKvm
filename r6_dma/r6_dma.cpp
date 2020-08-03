@@ -214,7 +214,7 @@ bool is_in_main_menu(WinProcess &proc, const R6Data& data)
 
 bool is_in_game(WinProcess &proc, const R6Data& data)
 {
-	return !is_in_op_select_menu(proc, data) && !is_in_main_menu(proc, data);
+	return !is_in_op_select_menu(proc, data) && !is_in_main_menu(proc, data) && get_game_state(proc, data) != 0;
 }
 
 void unlock_all(WinProcess &proc, const R6Data& data)
@@ -237,43 +237,53 @@ void update_all(WinProcess &proc, R6Data &data)
 	set_fov(proc, data, NEW_FOV);
 }
 
+void check_update(WinProcess &proc, R6Data &data, bool& update)
+{
+	if(USE_NO_SPREAD)
+	{
+		float spread_val = proc.Read<float>(data.weapon_info + 0x80); 
+		if(spread_val)
+		{
+			update = true;
+		}
+	}
+	if(USE_NO_RECOIL)
+	{
+		float no_recoil_b = proc.Read<float>(data.weapon_info + 0x198);
+		if(no_recoil_b)
+		{
+			update = true;
+		}			
+	}
+}
+
 void write_loop(WinProcess &proc, R6Data &data)
 {
 	printf("Write thread started\n\n");
+	bool update = true;
+
 	while (run_cheat)
 	{
-		printf("Game state: %d\n", get_game_state(proc, data));
-		read_data(proc, data, data.base == 0x0 || data.fov_manager == 0x0 || data.curr_weapon == 0);
+		read_data(proc, data, 
+			data.base == 0
+			|| data.fov_manager == 0
+			|| data.curr_weapon == 0
+			|| data.game_manager == 0 
+			|| data.glow_manager == 0
+			|| data.round_manager == 0
+			|| data.weapon_info == 0);
 
-		while(is_in_op_select_menu(proc, data) || is_in_main_menu(proc, data)) //waiting until the game is started
+		while((is_in_op_select_menu(proc, data) || is_in_main_menu(proc, data)) || get_game_state(proc, data) == 0) //waiting until the game is started
 		{
 			std::this_thread::sleep_for(std::chrono::milliseconds(50));
 		}
-		printf("Game state: %d\n", get_game_state(proc, data));
+		check_update(proc, data, update);
 
-		if(USE_NO_SPREAD)
-		{
-			if(is_in_game(proc, data))
-			{
-				float spread_val = proc.Read<float>(data.weapon_info + 0x80); 
-				if(spread_val) //cheking if we are already changed spread value
-				{
-					update_all(proc, data);
-				}
-			}
-		}
-		else if(is_in_game(proc, data)) //just to make sure we are not in main menu
+		if(is_in_game(proc, data) && update)
 		{			
 			update_all(proc, data);
+			update = false;
 			printf("Data updated\n\n");
-		}
-
-		if(!USE_NO_SPREAD) // if we are not using no spread we don't need to check if our weapon was changed
-		{
-			while(is_in_game(proc, data)) //waiting until round ends
-			{
-				std::this_thread::sleep_for(std::chrono::milliseconds(100));
-			}
 		}
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
