@@ -317,15 +317,7 @@ void check_update(WinProcess &proc, R6Data &data, ValuesUpdates& update)
 void write_loop(WinProcess &proc, R6Data &data)
 {
 	printf("Write thread started\n\n");
-	ValuesUpdates update = {
-		.update_cav_esp = false,
-		.update_no_recoil = false,
-		.update_no_spread = false,
-		.update_no_flash = false,
-		.update_firing_mode = false,
-		.update_glow = false,	
-		.update_fov = false	
-	};
+	ValuesUpdates update = {false,false,false,false,false,false,false};
 	while (run_cheat)
 	{
 		read_data(proc, data, 
