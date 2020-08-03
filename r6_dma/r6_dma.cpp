@@ -316,15 +316,6 @@ __attribute__((constructor)) static void init()
 						printf("Base: 0x%lx\nFOV Manager: 0x%lx\nLocal player: 0x%lx\nWeapon: 0x%lx\nGlow manager: 0x%lx\nRound manager: 0x%lx\nGame manager: 0x%lx\n\n", 
 								data.base, data.fov_manager, data.local_player, data.curr_weapon, data.glow_manager, data.round_manager, data.game_manager);
 
-						enable_esp(i, data);
-						enable_no_recoil(i, data);
-						enable_no_spread(i, data);
-						enable_no_flash(i, data);
-						enable_no_aim_animation(i, data);
-						enable_glow(i, data);
-						enable_run_and_shoot(i, data);
-					    
-						set_firing_mode(i, data, FiringMode::AUTO);
 						if(get_game_state(i, data) == 5)
 						{
 							unlock_all(i, data);
