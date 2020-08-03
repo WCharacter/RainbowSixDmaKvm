@@ -207,14 +207,14 @@ bool is_in_op_select_menu(WinProcess &proc, const R6Data& data)
 	return get_game_state(proc, data) == 1;
 }
 
-bool is_in_game(WinProcess &proc, const R6Data& data)
-{
-	return !is_in_op_select_menu(proc, data) && !is_in_main_menu(proc, data);
-}
-
 bool is_in_main_menu(WinProcess &proc, const R6Data& data)
 {
 	return get_game_state(proc, data) == 5;
+}
+
+bool is_in_game(WinProcess &proc, const R6Data& data)
+{
+	return !is_in_op_select_menu(proc, data) && !is_in_main_menu(proc, data);
 }
 
 void unlock_all(WinProcess &proc, const R6Data& data)
