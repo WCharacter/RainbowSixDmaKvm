@@ -1,3 +1,7 @@
+#ifndef _CONFIG
+#define _CONFIG
+#include "data.h"
+
 #define USE_CAV_ESP true
 #define USE_NO_RECOIL true
 #define USE_NO_SPREAD false
@@ -10,3 +14,5 @@
 #define UNLOCK_ALL false
 
 #define NEW_FOV 1.4f
+#define CURRENT_FIRE_MODE FiringMode::AUTO
+#endif

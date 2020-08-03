@@ -16,4 +16,3 @@ ninja
 * No flash
 * No aim animation
 * Firing mode auto on all weapons
-

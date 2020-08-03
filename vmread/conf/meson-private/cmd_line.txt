@@ -1,0 +1,5 @@
+[options]
+cpp_std = c++2a
+
+[properties]
+

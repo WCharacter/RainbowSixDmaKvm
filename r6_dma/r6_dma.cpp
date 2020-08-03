@@ -13,26 +13,7 @@
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
 
-enum class FiringMode : uint8_t
-{
-	AUTO = 0,
-	SINGLE = 3,
-	BURST = 2
-};
-
 static bool run_cheat = true;
-
-struct R6Data
-{
-	uint64_t base;
-	uint64_t local_player;
-	uint64_t fov_manager;
-	uint64_t curr_weapon;
-	uint64_t weapon_info;
-	uint64_t glow_manager;
-	uint64_t game_manager;
-	uint64_t round_manager;
-};
 
 uint64_t get_base(WinProcess &proc)
 {
@@ -225,26 +206,72 @@ void unlock_all(WinProcess &proc, const R6Data& data)
 	printf("Unlock all executed\n");
 }
 
-void update_all(WinProcess &proc, R6Data &data)
+void update_all(WinProcess &proc, R6Data &data, ValuesUpdates& update)
 {
-	enable_esp(proc, data);
-	enable_no_recoil(proc, data);
-	enable_no_spread(proc, data);
-	enable_no_flash(proc, data);
+	if(update.update_cav_esp)
+	{
+		enable_esp(proc, data);
+		update.update_cav_esp = false;
+		printf("Esp updated\n");
+	}
+	if(update.update_no_recoil)
+	{
+		enable_no_recoil(proc, data);
+		update.update_no_recoil = false;
+		printf("No recoil updated\n");
+	}
+	if(update.update_no_spread)
+	{
+		enable_no_spread(proc, data);
+		update.update_no_spread = false;
+		printf("No spread updated\n");
+	}	
+	if(update.update_no_flash)
+	{
+		enable_no_flash(proc, data);
+		update.update_no_flash = false;
+		printf("No flash updated\n");
+	}
+	if(update.update_firing_mode)
+	{
+		set_firing_mode(proc, data, CURRENT_FIRE_MODE);
+		update.update_firing_mode = false;
+		printf("Firing mode updated\n");
+	}
+	if(update.update_fov)
+	{
+		set_fov(proc, data, NEW_FOV);
+		update.update_fov = false;
+		printf("Fov updated\n");
+	}
 	enable_no_aim_animation(proc, data);
 	enable_glow(proc, data);
-	set_firing_mode(proc, data, FiringMode::AUTO);
-	set_fov(proc, data, NEW_FOV);
 }
 
-void check_update(WinProcess &proc, R6Data &data, bool& update)
+void check_update(WinProcess &proc, R6Data &data, ValuesUpdates& update)
 {
+	static bool esp_updated = false;
+	if(USE_CAV_ESP)
+	{
+		if(esp_updated)
+		{
+			if(is_in_op_select_menu(proc, data))
+			{
+				esp_updated = false;
+			}
+		}
+		if(!esp_updated)
+		{
+			update.update_cav_esp = true;
+			esp_updated = true;
+		}
+	}
 	if(USE_NO_SPREAD)
 	{
 		float spread_val = proc.Read<float>(data.weapon_info + 0x80); 
 		if(spread_val)
 		{
-			update = true;
+			update.update_no_spread = true;
 		}
 	}
 	if(USE_NO_RECOIL)
@@ -252,16 +279,53 @@ void check_update(WinProcess &proc, R6Data &data, bool& update)
 		float no_recoil_b = proc.Read<float>(data.weapon_info + 0x198);
 		if(no_recoil_b)
 		{
-			update = true;
-		}			
+			update.update_no_recoil = true;
+		}		
+	}
+	if(USE_NO_FLASH)
+	{
+		auto player = proc.Read<uint64_t>(data.local_player + 0x30);
+		player = proc.Read<uint64_t>(player + 0x31);
+		auto noflash = proc.Read<uint64_t>(player + 0x28);
+		auto noflash_value = proc.Read<uint8_t>(noflash + 0x40);
+		if(noflash_value)
+		{
+			update.update_no_flash = true;
+		}
+	}	
+	if(CHANGE_FIRING_MODE)
+	{
+		uint32_t firing_mode = proc.Read<uint32_t>(data.curr_weapon + 0x118);
+		if(firing_mode != (uint32_t)CURRENT_FIRE_MODE)
+		{
+			update.update_firing_mode = true;
+		}
+	}
+	if(CHANGE_FOV)
+	{
+		auto fov = proc.Read<uint64_t>(data.base + FOV_MANAGER_OFFSET);
+		fov = proc.Read<uint64_t>(fov + 0x60) + 0xe658f449242c196;
+		auto playerfov = proc.Read<uint64_t>(fov + 0x0) + 0x38;
+		auto fov_value = proc.Read<float>(playerfov); 
+		if(fov_value != NEW_FOV)
+		{
+			update.update_fov = true;
+		}
 	}
 }
 
 void write_loop(WinProcess &proc, R6Data &data)
 {
 	printf("Write thread started\n\n");
-	bool update = true;
-
+	ValuesUpdates update = {
+		.update_cav_esp = false,
+		.update_no_recoil = false,
+		.update_no_spread = false,
+		.update_no_flash = false,
+		.update_firing_mode = false,
+		.update_glow = false,	
+		.update_fov = false	
+	};
 	while (run_cheat)
 	{
 		read_data(proc, data, 
@@ -273,17 +337,17 @@ void write_loop(WinProcess &proc, R6Data &data)
 			|| data.round_manager == 0
 			|| data.weapon_info == 0);
 
-		while((is_in_op_select_menu(proc, data) || is_in_main_menu(proc, data)) || get_game_state(proc, data) == 0) //waiting until the game is started
+		while((is_in_op_select_menu(proc, data) 
+				|| is_in_main_menu(proc, data)) 
+				|| get_game_state(proc, data) == 0) //waiting until the game is started
 		{
 			std::this_thread::sleep_for(std::chrono::milliseconds(50));
 		}
 		check_update(proc, data, update);
 
-		if(is_in_game(proc, data) && update)
+		if(is_in_game(proc, data))
 		{			
-			update_all(proc, data);
-			update = false;
-			printf("Data updated\n\n");
+			update_all(proc, data, update);			
 		}
 		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}

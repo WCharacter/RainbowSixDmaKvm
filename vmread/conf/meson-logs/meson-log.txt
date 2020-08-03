@@ -1,0 +1,440 @@
+Build started at 2020-08-04T00:23:14.469470
+Main binary: /usr/bin/python3
+Build Options: -Dcpp_std=c++2a
+Python system: Linux
+The Meson build system
+Version: 0.53.2
+Source dir: /home/hrktr/Documents/r6_dma_kvm/vmread
+Build dir: /home/hrktr/Documents/r6_dma_kvm/vmread/conf
+Build type: native build
+Project name: vmread
+Project version: 1.3
+C compiler for the build machine: cc (gcc 9.3.0 "cc (Ubuntu 9.3.0-10ubuntu2) 9.3.0")
+C linker for the build machine: cc ld.bfd 2.34
+C++ compiler for the build machine: c++ (gcc 9.3.0 "c++ (Ubuntu 9.3.0-10ubuntu2) 9.3.0")
+C++ linker for the build machine: c++ ld.bfd 2.34
+C compiler for the host machine: cc (gcc 9.3.0 "cc (Ubuntu 9.3.0-10ubuntu2) 9.3.0")
+C linker for the host machine: cc ld.bfd 2.34
+C++ compiler for the host machine: c++ (gcc 9.3.0 "c++ (Ubuntu 9.3.0-10ubuntu2) 9.3.0")
+C++ linker for the host machine: c++ ld.bfd 2.34
+Build machine cpu family: x86_64
+Build machine cpu: x86_64
+Host machine cpu family: x86_64
+Host machine cpu: x86_64
+Target machine cpu family: x86_64
+Target machine cpu: x86_64
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp5ylu3o_a
+Command line:  cc /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp5ylu3o_a/testfile.c -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp5ylu3o_a/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -Weverything 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ cc: error: unrecognized command line option '-Weverything'
+
+Compiler for C supports arguments -Weverything: NO 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmphut0n5vs
+Command line:  c++ /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmphut0n5vs/testfile.cpp -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmphut0n5vs/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Weverything 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ c++: error: unrecognized command line option '-Weverything'
+
+Compiler for C++ supports arguments -Weverything: NO 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp_lzuutd3
+Command line:  cc /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp_lzuutd3/testfile.c -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp_lzuutd3/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -Wno-padded -Wpadded 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Compiler for C supports arguments -Wno-padded -Wpadded: YES 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp8ez51e58
+Command line:  c++ /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp8ez51e58/testfile.cpp -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp8ez51e58/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wno-padded -Wpadded 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Compiler for C++ supports arguments -Wno-padded -Wpadded: YES 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp3nseyvos
+Command line:  cc /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp3nseyvos/testfile.c -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp3nseyvos/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -Wno-sign-conversion -Wsign-conversion 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Compiler for C supports arguments -Wno-sign-conversion -Wsign-conversion: YES 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpi78d9g8c
+Command line:  c++ /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpi78d9g8c/testfile.cpp -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpi78d9g8c/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wno-sign-conversion -Wsign-conversion 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Compiler for C++ supports arguments -Wno-sign-conversion -Wsign-conversion: YES 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpvmdw6z3k
+Command line:  cc /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpvmdw6z3k/testfile.c -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpvmdw6z3k/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -Wno-padded -Wpadded 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Compiler for C supports arguments -Wno-padded -Wpadded: YES 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpribxk27n
+Command line:  c++ /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpribxk27n/testfile.cpp -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpribxk27n/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wno-padded -Wpadded 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Compiler for C++ supports arguments -Wno-padded -Wpadded: YES 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpaerpsjhv
+Command line:  cc /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpaerpsjhv/testfile.c -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpaerpsjhv/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -Wno-documentation-unknown-command -Wdocumentation-unknown-command 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ cc: error: unrecognized command line option '-Wdocumentation-unknown-command'
+
+Compiler for C supports arguments -Wno-documentation-unknown-command -Wdocumentation-unknown-command: NO 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp291lsomf
+Command line:  c++ /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp291lsomf/testfile.cpp -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp291lsomf/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wno-documentation-unknown-command -Wdocumentation-unknown-command 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ c++: error: unrecognized command line option '-Wdocumentation-unknown-command'
+
+Compiler for C++ supports arguments -Wno-documentation-unknown-command -Wdocumentation-unknown-command: NO 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmph6wqzgro
+Command line:  cc /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmph6wqzgro/testfile.c -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmph6wqzgro/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -Wno-missing-variable-declarations -Wmissing-variable-declarations 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ cc: error: unrecognized command line option '-Wmissing-variable-declarations'; did you mean '-Wmissing-declarations'?
+
+Compiler for C supports arguments -Wno-missing-variable-declarations -Wmissing-variable-declarations: NO 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp0j_oenit
+Command line:  c++ /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp0j_oenit/testfile.cpp -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp0j_oenit/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wno-missing-variable-declarations -Wmissing-variable-declarations 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ c++: error: unrecognized command line option '-Wmissing-variable-declarations'; did you mean '-Wmissing-declarations'?
+
+Compiler for C++ supports arguments -Wno-missing-variable-declarations -Wmissing-variable-declarations: NO 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp5nxg68ab
+Command line:  cc /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp5nxg68ab/testfile.c -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp5nxg68ab/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -Wno-c++98-compat -Wc++98-compat 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ cc: error: unrecognized command line option '-Wc++98-compat'; did you mean '-Wc++-compat'?
+
+Compiler for C supports arguments -Wno-c++98-compat -Wc++98-compat: NO 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpqv0xy1pt
+Command line:  c++ /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpqv0xy1pt/testfile.cpp -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpqv0xy1pt/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wno-c++98-compat -Wc++98-compat 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ c++: error: unrecognized command line option '-Wc++98-compat'; did you mean '-Wc++-compat'?
+
+Compiler for C++ supports arguments -Wno-c++98-compat -Wc++98-compat: NO 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpsbhvdary
+Command line:  cc /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpsbhvdary/testfile.c -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpsbhvdary/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -Wno-c++98-compat-pedantic -Wc++98-compat-pedantic 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ cc: error: unrecognized command line option '-Wc++98-compat-pedantic'
+
+Compiler for C supports arguments -Wno-c++98-compat-pedantic -Wc++98-compat-pedantic: NO 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpdg22m08u
+Command line:  c++ /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpdg22m08u/testfile.cpp -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpdg22m08u/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wno-c++98-compat-pedantic -Wc++98-compat-pedantic 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ c++: error: unrecognized command line option '-Wc++98-compat-pedantic'
+
+Compiler for C++ supports arguments -Wno-c++98-compat-pedantic -Wc++98-compat-pedantic: NO 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp4_vhr2k2
+Command line:  cc /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp4_vhr2k2/testfile.c -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp4_vhr2k2/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -Wno-weak-vtables -Wweak-vtables 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ cc: error: unrecognized command line option '-Wweak-vtables'
+
+Compiler for C supports arguments -Wno-weak-vtables -Wweak-vtables: NO 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpi_mq5apz
+Command line:  c++ /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpi_mq5apz/testfile.cpp -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpi_mq5apz/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wno-weak-vtables -Wweak-vtables 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ c++: error: unrecognized command line option '-Wweak-vtables'
+
+Compiler for C++ supports arguments -Wno-weak-vtables -Wweak-vtables: NO 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpxtqhn6bl
+Command line:  cc /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpxtqhn6bl/testfile.c -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpxtqhn6bl/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -Wl,--start-group -lX11 -Wl,--end-group 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Compiler for C supports arguments -lX11: YES 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpam781t4e
+Command line:  c++ /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpam781t4e/testfile.cpp -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpam781t4e/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wl,--start-group -lX11 -Wl,--end-group 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Compiler for C++ supports arguments -lX11: YES 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpatyw4z34
+Command line:  cc /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpatyw4z34/testfile.c -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpatyw4z34/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -pthread 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Compiler for C supports arguments -pthread: YES 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmptjsjofro
+Command line:  c++ /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmptjsjofro/testfile.cpp -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmptjsjofro/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -pthread 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Compiler for C++ supports arguments -pthread: YES 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp9b2s0vpt
+Command line:  c++ /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp9b2s0vpt/testfile.cpp -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp9b2s0vpt/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wno-padded -Wpadded 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Compiler for C++ supports arguments -Wno-padded -Wpadded: YES 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp9z518mcs
+Command line:  c++ /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp9z518mcs/testfile.cpp -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp9z518mcs/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wno-c++98-compat -Wc++98-compat 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ c++: error: unrecognized command line option '-Wc++98-compat'; did you mean '-Wc++-compat'?
+
+Compiler for C++ supports arguments -Wno-c++98-compat -Wc++98-compat: NO 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpv4uelghm
+Command line:  c++ /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpv4uelghm/testfile.cpp -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpv4uelghm/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wno-padded -Wpadded 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Compiler for C++ supports arguments -Wno-padded -Wpadded: YES 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpi6phlqyj
+Command line:  c++ /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpi6phlqyj/testfile.cpp -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpi6phlqyj/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wno-c++98-compat-pedantic -Wc++98-compat-pedantic 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ c++: error: unrecognized command line option '-Wc++98-compat-pedantic'
+
+Compiler for C++ supports arguments -Wno-c++98-compat-pedantic -Wc++98-compat-pedantic: NO 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp_wqx0nl8
+Command line:  c++ /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp_wqx0nl8/testfile.cpp -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp_wqx0nl8/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wno-weak-vtables -Wweak-vtables 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ c++: error: unrecognized command line option '-Wweak-vtables'
+
+Compiler for C++ supports arguments -Wno-weak-vtables -Wweak-vtables: NO 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmphggh13cc
+Command line:  c++ /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmphggh13cc/testfile.cpp -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmphggh13cc/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wno-documentation-unknown-command -Wdocumentation-unknown-command 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ c++: error: unrecognized command line option '-Wdocumentation-unknown-command'
+
+Compiler for C++ supports arguments -Wno-documentation-unknown-command -Wdocumentation-unknown-command: NO 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp0_ev38d0
+Command line:  c++ /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp0_ev38d0/testfile.cpp -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp0_ev38d0/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive -Wno-old-style-cast -Wold-style-cast 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Compiler for C++ supports arguments -Wno-old-style-cast -Wold-style-cast: YES 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpaj97ittf
+Command line:  cc /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpaj97ittf/testfile.c -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpaj97ittf/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -Wno-missing-prototypes -Wmissing-prototypes 
+
+Code:
+ int i;
+
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Compiler for C supports arguments -Wno-missing-prototypes -Wmissing-prototypes: YES 
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpw4w9vb6d
+Command line:  cc /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpw4w9vb6d/testfile.c -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpw4w9vb6d/output.exe -pipe -D_FILE_OFFSET_BITS=64 -O0 -Wl,--start-group -ldl -Wl,--end-group -Wl,--allow-shlib-undefined 
+
+Code:
+ int main(void) { return 0; }
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Library dl found: YES
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp990scrrk
+Command line:  cc /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp990scrrk/testfile.c -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmp990scrrk/output.exe -pipe -D_FILE_OFFSET_BITS=64 -O0 -Wl,--start-group -lpthread -Wl,--end-group -Wl,--allow-shlib-undefined 
+
+Code:
+ int main(void) { return 0; }
+Compiler stdout:
+ 
+Compiler stderr:
+ 
+Library pthread found: YES
+Build targets in project: 3
+
+Option cpp_std is: c++2a [default: gnu++2a]
+Found ninja-1.10.0 at /usr/bin/ninja
+Running compile:
+Working directory:  /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpc9voc5ja
+Command line:  c++ /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpc9voc5ja/testfile.cpp -o /home/hrktr/Documents/r6_dma_kvm/vmread/conf/meson-private/tmpc9voc5ja/output.obj -pipe -c -D_FILE_OFFSET_BITS=64 -O0 -fpermissive --print-search-dirs 
+
+Code:
+ 
+Compiler stdout:
+ install: /usr/lib/gcc/x86_64-linux-gnu/9/
+programs: =/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/bin/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/bin/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/bin/
+libraries: =/usr/lib/gcc/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/lib/x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/lib/x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/9/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../x86_64-linux-gnu/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../lib/:/lib/x86_64-linux-gnu/9/:/lib/x86_64-linux-gnu/:/lib/../lib/:/usr/lib/x86_64-linux-gnu/9/:/usr/lib/x86_64-linux-gnu/:/usr/lib/../lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../../x86_64-linux-gnu/lib/:/usr/lib/gcc/x86_64-linux-gnu/9/../../../:/lib/:/usr/lib/
+
+Compiler stderr:
+ 
