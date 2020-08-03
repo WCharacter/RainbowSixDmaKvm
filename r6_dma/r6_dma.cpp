@@ -8,6 +8,7 @@
 #include <chrono>
 #include "../vmread/hlapi/hlapi.h"
 #include "offsets.h"
+#include "config.h"
 
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
@@ -73,6 +74,8 @@ void read_data(WinProcess &proc, R6Data &data, bool init = true)
 
 void enable_esp(WinProcess &proc, const R6Data &data)
 {
+	if(!USE_CAV_ESP) return;
+
 	if(data.game_manager == 0) return;
 	auto entity_list = proc.Read<uint64_t>(data.game_manager + 0x98) + 0xE60F6CF8784B5E96;
 	if(entity_list == 0) return;	
@@ -97,6 +100,8 @@ void enable_esp(WinProcess &proc, const R6Data &data)
 
 void enable_no_recoil(WinProcess &proc, const R6Data &data)
 {
+	if(!USE_NO_RECOIL) return;
+
 	if(data.fov_manager == 0) return;
 	proc.Write<float>(data.fov_manager + 0xE34, 0.f);
 	proc.Write<float>(data.weapon_info + 0x198, 0.f); //rec b
@@ -107,6 +112,8 @@ void enable_no_recoil(WinProcess &proc, const R6Data &data)
 
 void enable_no_spread(WinProcess &proc, const R6Data &data)
 {
+	if(!USE_NO_SPREAD) return;
+
 	if(data.weapon_info == 0) return;
 	proc.Write<float>(data.weapon_info + 0x80, 0.f); // no spread
 	printf("No spread active\n");
@@ -114,14 +121,18 @@ void enable_no_spread(WinProcess &proc, const R6Data &data)
 
 void enable_run_and_shoot(WinProcess &proc, const R6Data &data)
 {
+	if(!USE_RUN_AND_SHOOT) return;
+
 	if(data.base == 0) return;
-	proc.Write<uint8_t>(data.base + 0x1E59401, 0x1); // run and shoot
-	proc.Write<uint8_t>(data.base + 0x33AE195, 0x1); // run and shoot
+	proc.Write<uint8_t>(data.base + 0x1E59401 + 0x6, 0x1); // run and shoot
+	proc.Write<uint8_t>(data.base + 0x33AE195 + 0x6, 0x1); // run and shoot
 	printf("Run and shoot active\n");
 }
 
 void enable_no_flash(WinProcess &proc, const R6Data &data)
 {
+	if(!USE_NO_FLASH) return;
+
 	if(data.local_player == 0) return;
 	auto player = proc.Read<uint64_t>(data.local_player + 0x30);
 	player = proc.Read<uint64_t>(player + 0x31);
@@ -132,6 +143,8 @@ void enable_no_flash(WinProcess &proc, const R6Data &data)
 
 void enable_no_aim_animation(WinProcess &proc, const R6Data &data)
 {
+	if(!USE_NO_AIM_ANIM) return;
+
 	if(data.local_player == 0) return;
 	auto no_anim = proc.Read<uint64_t>(data.local_player + 0x90);
 	no_anim = proc.Read<uint64_t>(no_anim + 0xc8);
@@ -141,6 +154,8 @@ void enable_no_aim_animation(WinProcess &proc, const R6Data &data)
 
 void set_fov(WinProcess &proc, const R6Data &data, float fov_val)
 {
+	if(!CHANGE_FOV) return;
+
 	auto fov = proc.Read<uint64_t>(data.base + FOV_MANAGER_OFFSET);
 	if(fov == 0) return;
 	fov = proc.Read<uint64_t>(fov + 0x60) + 0xe658f449242c196;
@@ -153,6 +168,8 @@ void set_fov(WinProcess &proc, const R6Data &data, float fov_val)
 
 void set_firing_mode(WinProcess &proc, const R6Data &data, FiringMode mode)
 {
+	if(!CHANGE_FIRING_MODE) return;
+
 	if(data.curr_weapon == 0) return; 
 	proc.Write<uint32_t>(data.curr_weapon + 0x118, (uint32_t)mode); //firing mode 0 - auto 3 - single 2 -  burst
 	printf("Fire mode: %s\n", (mode == FiringMode::AUTO ? "auto" : mode == FiringMode::BURST ? "burst" : "single"));
@@ -160,6 +177,7 @@ void set_firing_mode(WinProcess &proc, const R6Data &data, FiringMode mode)
 
 void enable_glow(WinProcess &proc, const R6Data &data)
 {
+	if(!USE_GLOW) return;
 	auto chain = proc.Read<uint64_t>(data.glow_manager + 0xb8);
 	if (chain != 0)
 	{
@@ -180,20 +198,43 @@ void enable_glow(WinProcess &proc, const R6Data &data)
 int32_t get_game_state(WinProcess &proc, const R6Data &data)
 {
 	if(data.round_manager == 0) return -1;
-	return proc.Read<uint8_t>(data.round_manager + 0x2e8);
+	return proc.Read<uint8_t>(data.round_manager + 0x2e8); // 3/2=in game 1=in operator selection menu 5=in main menu
 }
 
 //player is currently in operator selection menu
 bool is_in_op_select_menu(WinProcess &proc, const R6Data& data)
+{
+	return get_game_state(proc, data) == 1;
+}
+
+bool is_in_game(WinProcess &proc, const R6Data& data)
+{
+	return !is_in_op_select_menu(proc, data) && !is_in_main_menu(proc, data);
+}
+
+bool is_in_main_menu(WinProcess &proc, const R6Data& data)
 {
 	return get_game_state(proc, data) == 5;
 }
 
 void unlock_all(WinProcess &proc, const R6Data& data)
 {
+	if(!UNLOCK_ALL) return;
 	uint8_t shellcode[] = { 65, 198, 70, 81, 0, 144 };
 	proc.WriteMem(data.base + 0x271470B, shellcode, sizeof(shellcode));
 	printf("Unlock all executed\n");
+}
+
+void update_all(WinProcess &proc, R6Data &data)
+{
+	enable_esp(proc, data);
+	enable_no_recoil(proc, data);
+	enable_no_spread(proc, data);
+	enable_no_flash(proc, data);
+	enable_no_aim_animation(proc, data);
+	enable_glow(proc, data);
+	set_firing_mode(proc, data, FiringMode::AUTO);
+	set_fov(proc, data, NEW_FOV);
 }
 
 void write_loop(WinProcess &proc, R6Data &data)
@@ -201,21 +242,40 @@ void write_loop(WinProcess &proc, R6Data &data)
 	printf("Write thread started\n\n");
 	while (run_cheat)
 	{
+		printf("Game state: %d\n", get_game_state(proc, data));
 		read_data(proc, data, data.base == 0x0 || data.fov_manager == 0x0 || data.curr_weapon == 0);
-		float spread_val = proc.Read<float>(data.weapon_info + 0x80);
-		
-		if (spread_val)
+
+		while(is_in_op_select_menu(proc, data) || is_in_main_menu(proc, data)) //waiting until the game is started
 		{
-			enable_esp(proc, data);
-			enable_no_recoil(proc, data);
-			enable_no_spread(proc, data);
-			enable_no_flash(proc, data);
-			enable_no_aim_animation(proc, data);
-			enable_glow(proc, data);
-			set_firing_mode(proc, data, FiringMode::AUTO);
+			std::this_thread::sleep_for(std::chrono::milliseconds(50));
+		}
+		printf("Game state: %d\n", get_game_state(proc, data));
+
+		if(USE_NO_SPREAD)
+		{
+			if(is_in_game(proc, data))
+			{
+				float spread_val = proc.Read<float>(data.weapon_info + 0x80); 
+				if(spread_val) //cheking if we are already changed spread value
+				{
+					update_all(proc, data);
+				}
+			}
+		}
+		else if(is_in_game(proc, data)) //just to make sure we are not in main menu
+		{			
+			update_all(proc, data);
 			printf("Data updated\n\n");
 		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+
+		if(!USE_NO_SPREAD) // if we are not using no spread we don't need to check if our weapon was changed
+		{
+			while(is_in_game(proc, data)) //waiting until round ends
+			{
+				std::this_thread::sleep_for(std::chrono::milliseconds(100));
+			}
+		}
+		std::this_thread::sleep_for(std::chrono::milliseconds(50));
 	}
 	printf("Exiting...\n");
 }
@@ -262,18 +322,14 @@ __attribute__((constructor)) static void init()
 						enable_no_flash(i, data);
 						enable_no_aim_animation(i, data);
 						enable_glow(i, data);
-						//enable_run_and_shoot(i, data);
+						enable_run_and_shoot(i, data);
 					    
 						set_firing_mode(i, data, FiringMode::AUTO);
 						if(get_game_state(i, data) == 5)
 						{
 							unlock_all(i, data);
 						}
-						// float fov;
-						// fprintf(out, "Enter fov: ");
-						// scanf("%f", &fov);
-						// fprintf(out, "\n");
-						// set_fov(i, data, fov);
+   					 	set_fov(i, data, NEW_FOV);
 
 						std::thread write_thread(write_loop, std::ref(i), std::ref(data));
 						write_thread.detach();
