@@ -59,7 +59,7 @@ void enable_esp(WinProcess &proc, const R6Data &data)
 
 	if(data.game_manager == 0) return;
 	auto entity_list = proc.Read<uint64_t>(data.game_manager + 0x98) + 0xE60F6CF8784B5E96;
-	if(entity_list == 0) return;	
+	if(entity_list == 0) return;
 	for(int i = 0; i < 11; ++i)
 	{
 		auto entity_address = proc.Read<uint64_t>(entity_list + (0x8 * i)); //entity_object
@@ -72,7 +72,11 @@ void enable_esp(WinProcess &proc, const R6Data &data)
 			auto current_vtable_rel = proc.Read<uint64_t>(pbuffer) - data.base;
 			if(current_vtable_rel == VTMARKER_OFFSET)
 			{
-				proc.Write<uint8_t>(pbuffer + 0x632, 1);
+				auto spotted = proc.Read<uint8_t>(pbuffer + 0x632);
+				if(!spotted)
+				{
+					proc.Write<uint8_t>(pbuffer + 0x632, 1);
+				}
 			}
 		}
 	}
@@ -333,7 +337,7 @@ void write_loop(WinProcess &proc, R6Data &data)
 		while((is_in_main_menu(proc, data)) 
 				|| get_game_state(proc, data) == 0) //waiting until the game is started
 		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			std::this_thread::sleep_for(std::chrono::milliseconds(1));
 		}
 		check_update(proc, data, update);
 
@@ -341,7 +345,7 @@ void write_loop(WinProcess &proc, R6Data &data)
 		{			
 			update_all(proc, data, update);			
 		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		std::this_thread::sleep_for(std::chrono::milliseconds(1));
 	}
 	printf("Exiting...\n");
 }
