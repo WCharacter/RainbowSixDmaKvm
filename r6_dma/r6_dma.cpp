@@ -251,6 +251,7 @@ void update_all(WinProcess &proc, R6Data &data, ValuesUpdates& update)
 void check_update(WinProcess &proc, R6Data &data, ValuesUpdates& update)
 {
 	static bool esp_updated = false;
+
 	if(USE_CAV_ESP)
 	{
 		if(esp_updated)
@@ -260,7 +261,7 @@ void check_update(WinProcess &proc, R6Data &data, ValuesUpdates& update)
 				esp_updated = false;
 			}
 		}
-		if(!esp_updated)
+		if(!esp_updated && is_in_game(proc, data))
 		{
 			update.update_cav_esp = true;
 			esp_updated = true;
@@ -329,11 +330,10 @@ void write_loop(WinProcess &proc, R6Data &data)
 			|| data.round_manager == 0
 			|| data.weapon_info == 0);
 
-		while((is_in_op_select_menu(proc, data) 
-				|| is_in_main_menu(proc, data)) 
+		while((is_in_main_menu(proc, data)) 
 				|| get_game_state(proc, data) == 0) //waiting until the game is started
 		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(50));
+			std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		}
 		check_update(proc, data, update);
 
@@ -341,7 +341,7 @@ void write_loop(WinProcess &proc, R6Data &data)
 		{			
 			update_all(proc, data, update);			
 		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(50));
+		std::this_thread::sleep_for(std::chrono::milliseconds(10));
 	}
 	printf("Exiting...\n");
 }
