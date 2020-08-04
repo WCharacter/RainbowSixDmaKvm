@@ -16,3 +16,7 @@ ninja
 * No flash
 * No aim animation
 * Firing mode auto on all weapons
+
+# Changing config
+* Open config.h with text editor
+* Change defines as you wish
