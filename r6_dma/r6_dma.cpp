@@ -260,7 +260,7 @@ void check_update(WinProcess &proc, R6Data &data, ValuesUpdates& update)
 	{
 		if(esp_updated)
 		{
-			if(is_in_op_select_menu(proc, data))
+			if(!is_in_game(proc, data))
 			{
 				esp_updated = false;
 			}
@@ -423,7 +423,7 @@ __attribute__((constructor)) static void init()
 			if (!flag)
 				run_cheat = false;
 
-			std::this_thread::sleep_for(std::chrono::milliseconds(100));
+			std::this_thread::sleep_for(std::chrono::milliseconds(10));
 		}
 	}
 	catch (VMException &e)
