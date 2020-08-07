@@ -56,6 +56,7 @@ void read_data(WinProcess &proc, R6Data &data, bool init = true)
 void enable_esp(WinProcess &proc, const R6Data &data)
 {
 	if(!USE_CAV_ESP) return;
+	bool updated = false;
 
 	if(data.game_manager == 0) return;
 	auto entity_list = proc.Read<uint64_t>(data.game_manager + 0x98) + 0xE60F6CF8784B5E96;
@@ -75,12 +76,16 @@ void enable_esp(WinProcess &proc, const R6Data &data)
 				auto spotted = proc.Read<uint8_t>(pbuffer + 0x632);
 				if(!spotted)
 				{
+					updated = true;
 					proc.Write<uint8_t>(pbuffer + 0x632, 1);
 				}
 			}
 		}
 	}
-	printf("Cav esp active\n");
+	if(updated)
+	{
+		printf("Cav esp updated\n");
+	}
 }
 
 void enable_no_recoil(WinProcess &proc, const R6Data &data)
@@ -212,12 +217,7 @@ void unlock_all(WinProcess &proc, const R6Data& data)
 
 void update_all(WinProcess &proc, R6Data &data, ValuesUpdates& update)
 {
-	if(update.update_cav_esp)
-	{
-		enable_esp(proc, data);
-		update.update_cav_esp = false;
-		printf("Esp updated\n");
-	}
+	enable_esp(proc, data);
 	if(update.update_no_recoil)
 	{
 		enable_no_recoil(proc, data);
@@ -248,7 +248,12 @@ void update_all(WinProcess &proc, R6Data &data, ValuesUpdates& update)
 		update.update_fov = false;
 		printf("Fov updated\n");
 	}
-	enable_no_aim_animation(proc, data);
+	if(update.update_fast_aim)
+	{
+		enable_no_aim_animation(proc, data);
+		update.update_fast_aim = false;
+	}
+
 	enable_glow(proc, data);
 }
 
@@ -317,12 +322,22 @@ void check_update(WinProcess &proc, R6Data &data, ValuesUpdates& update)
 			update.update_fov = true;
 		}
 	}
+	if(USE_NO_AIM_ANIM)
+	{
+		auto no_anim = proc.Read<uint64_t>(data.local_player + 0x90);
+		no_anim = proc.Read<uint64_t>(no_anim + 0xc8);
+		auto val = proc.Read<uint8_t>(no_anim + 0x384);
+		if(val)
+		{
+			update.update_fast_aim = true;
+		}
+	}
 }
 
 void write_loop(WinProcess &proc, R6Data &data)
 {
 	printf("Write thread started\n\n");
-	ValuesUpdates update = {false,false,false,false,false,false,false};
+	ValuesUpdates update = {false,false,false,false,false,false,false,false};
 	while (run_cheat)
 	{
 		read_data(proc, data, 

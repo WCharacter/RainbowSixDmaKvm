@@ -30,6 +30,7 @@ struct ValuesUpdates
 	bool update_firing_mode;
 	bool update_glow;
     bool update_fov;
+	bool update_fast_aim;
 };
 
 #endif
